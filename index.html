@@ -134,14 +134,14 @@ h1{font-family:var(--mono-display);font-weight:400;word-spacing:-.4em;font-size:
 
 
 /* Distinção por candidato: vermelho para Lula, azul para Flávio, sempre com número e nome */
-:root{--c-lula:#c23b2e;--c-flavio:#2f5d9e;--c-outros:#5e5a63}
+:root{--c-lula:#ce5956;--c-flavio:#6394d1;--c-outros:#5e5a63}
 .vote.lula{background:var(--c-lula)}.vote.flavio{background:var(--c-flavio)}.vote.outros{background:var(--c-outros)}
 .sub-head{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;margin-top:6px}
 .sub-head .dot{width:12px;height:12px;border-radius:3px;background:var(--c-outros)}
 .sub-head.lula .dot{background:var(--c-lula)}.sub-head.flavio .dot{background:var(--c-flavio)}
 .sub-head .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:500}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-lula:#d9503f;--c-flavio:#4f7fc4}}
-:root[data-theme="dark"]{--c-lula:#d9503f;--c-flavio:#4f7fc4}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-lula:#ce5956;--c-flavio:#6394d1}}
+:root[data-theme="dark"]{--c-lula:#ce5956;--c-flavio:#6394d1}
 /* ---------- Ficha ---------- */
 .sheet-bg{position:fixed;inset:0;background:rgb(15 15 18 / .55);z-index:10;display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 .sheet-bg[hidden]{display:none}
