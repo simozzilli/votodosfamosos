@@ -278,7 +278,7 @@ footer{font-size:13px;color:var(--muted)}
     </section>
   </div>
 
-  <footer>Levantamento de 11 de outubro de 2026, a partir de matérias publicadas entre 18/09 e 04/10. 2º turno em 25 de outubro.</footer>
+  <footer>Levantamento de 11 de outubro de 2026, a partir de matérias publicadas entre 18/09 e 10/10. 2º turno em 25 de outubro.</footer>
 </div>
 
 <div class="sheet-bg" id="sheet" hidden></div>
@@ -291,6 +291,13 @@ const SOURCES = {
   A:{label:"A Tarde", title:"Lula ou Flávio? Saiba em quem os famosos votam em 2026", date:"04/10/2026", url:"https://atarde.com.br/entretenimento/lula-ou-flavio-saiba-em-quem-os-famosos-votam-em-2026-1404453"},
   B:{label:"Brasil Criativo", title:"Setor cultural lança manifesto em apoio a Lula", date:"18/09/2026", url:"https://portalbrasilcriativo.com.br/setor-cultural-lanca-manifesto-de-apoio-a-lula-eleicoes-2026/"},
   C:{label:"Brasil 247", title:"Manifesto de mais de 300 artistas apoia Lula", date:"18/09/2026", url:"https://www.brasil247.com/cultura/manifesto-de-mais-de-300-artistas-apoia-lula-e-cobra-mudancas-na-politica-cultural-do-pais/"},
+   W:{label:"GazetaWeb", title:"Djavan declara voto em Lula nas eleições de 2026", date:"25/09/2026", url:"https://www.gazetaweb.com/noticias/politica/djavan-declara-voto-em-lula-nas-eleicoes-de-2026-pela-democracia-e-por-justica-social-938213"},
+  K:{label:"GC Mais", title:"Paolla Oliveira declara voto em Lula no 2º turno", date:"06/10/2026", url:"https://gcmais.com.br/noticias/2026/10/06/paolla-oliveira-declara-voto-em-lula-no-2-turno-e-pede-participacao-nas-urnas"},
+  D:{label:"GC Mais", title:"Ex-Seleção Brasileira, Daniel Alves declara apoio a Flávio Bolsonaro", date:"06/10/2026", url:"https://gcmais.com.br/noticias/2026/10/06/ex-selecao-brasileira-daniel-alves-declara-apoio-a-flavio-bolsonaro"},
+  R:{label:"Metrópoles", title:"Rodrigo Simas declara voto em Lula", date:"09/10/2026", url:"https://metropoles.com/colunas/fabia-oliveira/rodrigo-simas-declara-voto-em-lula-e-decreta-politica-e-coisa-seria"},
+  Q:{label:"Poder360", title:"Depois de defender Master, Gabriela Prioli sugere voto em Lula", date:"10/10/2026", url:"https://www.poder360.com.br/poder-economia/depois-de-defender-master-gabriela-prioli-sugere-voto-em-lula/"},
+  E:{label:"A Tarde", title:"Veja os jogadores e ex-jogadores que declararam voto nesta eleição", date:"04/10/2026", url:"https://atarde.com.br/esportes/futebol/veja-os-jogadores-e-ex-jogadores-que-declararam-voto-nesta-eleicao-1404521"},
+   V:{label:"Revista Fórum", title:"Gabi Guimarães, capitã da seleção de vôlei, declara voto em Lula", date:"10/10/2026", url:"https://revistaforum.com.br/blogs/video-gabi-guimaraes-capita-da-selecao-de-volei-declara-voto-em-lula"},
   F:{label:"Revista Fórum", title:"Influenciadores lançam carta de apoio a Lula", date:"28/09/2026", url:"https://revistaforum.com.br/revista-forum/influenciadores-carta-lula-plataformas/"}
 };
 const CANDS = {
@@ -354,6 +361,14 @@ const RAW = [
  ["Letícia Colin","Atuação","lula","","A",0,0,"Atriz"],
  ["Margareth Menezes","Música","lula","","A",0,0,"Cantora, ministra da Cultura"],
  ["Russo Passapusso","Música","lula","","A",0,0,"Cantor e compositor"],
+ ["Djavan","Música","lula","Publicou \"Pela democracia e por justiça social, eu voto Lula\" (25/09) e reforçou o apoio em show (03/10).","W",0,0,"Cantor e compositor"],
+ ["Paolla Oliveira","Atuação","lula","Declarou nas redes: \"Dia 25 eu com Lula 13\" (05/10).","K",0,0,"Atriz"],
+ ["Rodrigo Simas","Atuação","lula","Em vídeo no Instagram: \"Dia 25 de outubro, eu voto 13\" (09/10).","R",0,0,"Ator"],
+ ["Gabriela Prioli","Influência digital","lula","Em vídeo (08/10), elogiou políticas como a saída do mapa da fome e disse que o público \"já sabe\" seu voto, sem citar o nome.","Q",1,0,"Advogada e apresentadora"],
+ ["Gabi Guimarães","Esporte","lula","Em vídeo no Instagram (10/10): \"Política não é minha praia, mas Brasil é\"; votará em Lula por um país diverso e pela democracia.","V",0,0,"Capitã da seleção de vôlei"],
+ ["Raí","Esporte","lula","Declarou voto em reel no Instagram (04/10).","E",0,0,"Ex-jogador de futebol"],
+ ["Paulinho","Esporte","lula","Publicou nas redes defesa do Bolsa Família, Prouni e cotas, com voto em Lula (04/10).","E",0,0,"Jogador do Palmeiras"],
+ ["Jackson Irvine","Esporte","lula","Postou foto com camisa número 13 e imagem de Sócrates (04/10).","E",1,0,"Jogador australiano"],
  // Manifestos do setor cultural
  ["Fernando Morais","Literatura","lula",CULT,"B",0,0,"Escritor e jornalista, autor de Olga e Chatô"],
  ["Luiza Romão","Literatura","lula",CULT,"B",0,0,"Poeta, vencedora do Jabuti"],
@@ -385,6 +400,9 @@ const RAW = [
  ["Joe Loreto","Influência digital","lula",CARTA,"F",0,0,"Criador do Ah Negão"],
  ["Ilustralu","Influência digital","lula",CARTA,"F",0,0,"Ilustradora"],
 
+ ["Daniel Alves","Esporte","flavio","Declarou apoio em vídeo nas redes (05/10).","D",0,0,"Ex-jogador da Seleção"],
+ ["Felipe Melo","Esporte","flavio","Postou fotos com a camisa da Seleção no dia da eleição (04/10).","E",1,0,"Jogador de futebol"],
+ ["Falcão","Esporte","flavio","Postou fotos com a camisa da Seleção no dia da eleição (04/10).","E",1,0,"Craque do futsal"],
  ["Amado Batista","Música","flavio","Recebeu Flávio em sua fazenda e gravou vídeo de apoio.","GMAP",0,0,"Cantor"],
  ["Penélope Nova","TV e jornalismo","flavio","Postou foto com Flávio, \"P de presidente\", e foi a ato na Paulista (07/09).","GMP",0,0,"Apresentadora"],
  ["Leonardo","Música","flavio","Em vídeo, respondeu a um pedido de \"alô\" para Lula mandando abraço a Flávio.","GMAP",1,0,"Cantor sertanejo"],
