@@ -92,6 +92,10 @@ h1{font-family:var(--mono-display);font-weight:400;word-spacing:-.4em;font-size:
 #view-album{display:flex;flex-direction:column;gap:36px}
 #view-album[hidden],#view-jogo[hidden]{display:none}
 /* ---------- Barra ---------- */
+.bar-row{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.bar-row .search{flex:1 1 220px;min-width:0;width:auto}
+.split{flex:none;font-size:14px;font-weight:700;padding:8px 14px;border-radius:12px;border:2px solid var(--ink);background:var(--surface);color:var(--fg);cursor:pointer}
+.split[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;background:var(--bg);padding-block:10px;display:flex;flex-direction:column;gap:10px;border-bottom:2px solid var(--ink)}
 .search{width:100%;font:inherit;padding:10px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--surface);color:var(--fg)}
 .areas{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -222,7 +226,7 @@ footer{font-size:13px;color:var(--muted)}
     <div class="score" id="score" role="group" aria-label="Filtrar por candidato"></div>
     <p class="hint">Toque num candidato para ver só quem declarou apoio a ele.</p>
     <div class="bar">
-      <input id="q" class="search" type="search" placeholder="Buscar famoso (ex.: Ivete, Neymar)" aria-label="Procurar por nome">
+      <div class="bar-row"><input id="q" class="search" type="search" placeholder="Buscar famoso (ex.: Ivete, Neymar)" aria-label="Procurar por nome"><button type="button" class="split" id="split" aria-pressed="false">Separar Lula e Flávio</button></div>
       <div class="areas" id="areas" role="group" aria-label="Ir para área"></div>
     </div>
     <main id="sections"></main>
@@ -443,7 +447,7 @@ function sticker(d, tag="button", extra=""){
 }
 
 /* ---------- Lista ---------- */
-let state = {cand:new Set(["lula","flavio","outros"]), q:""};
+let state = {cand:new Set(["lula","flavio","outros"]), q:"", split:false};
 function renderScore(){
   $("score").innerHTML = Object.entries(CANDS).map(([k,c])=>{
     const n = D.filter(d=>d.cand===k).length;
@@ -466,11 +470,11 @@ function render(){
   $("areas").querySelectorAll("button").forEach(b=>b.onclick=()=>{ const el=$(slug(b.dataset.a)); if(el) el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); });
   if(!rows.length){ $("sections").innerHTML = `<p class="empty">Nenhum famoso encontrado. Tente outro nome ou ative mais candidatos no placar.</p>`; return; }
   $("sections").innerHTML = areas.map(a=>{
-    const list = rows.filter(d=>d.area===a).sort((x,y)=>Object.keys(CANDS).indexOf(x.cand)-Object.keys(CANDS).indexOf(y.cand) || x.name.localeCompare(y.name,"pt-BR"));
+    const list = rows.filter(d=>d.area===a).sort((x,y)=>x.name.localeCompare(y.name,"pt-BR"));
     const meta = Object.entries(CANDS).map(([k,c])=>{const n=list.filter(d=>d.cand===k).length; return n?`<span>${c.num||"·"} ${c.short} ${n}</span>`:"";}).join("");
     return `<section class="area" id="${slug(a)}" style="--a:${AREA_COLOR[a]}">
       <div class="area-head"><h2>${a}</h2><div class="meta">${meta}</div></div>
-      ${Object.keys(CANDS).filter(k=>list.some(d=>d.cand===k)).map(k=>`<div class="sub-head ${k}"><span class="dot"></span>${k==="outros"?"Outros candidatos · 1º turno":`${CANDS[k].num} · ${CANDS[k].name} (${CANDS[k].party})`}<span class="cnt">${list.filter(d=>d.cand===k).length}</span></div>
+      ${!state.split ? `<div class="grid">${list.map(d=>sticker(d)).join("")}</div>` : Object.keys(CANDS).filter(k=>list.some(d=>d.cand===k)).map(k=>`<div class="sub-head ${k}"><span class="dot"></span>${k==="outros"?"Outros candidatos · 1º turno":`${CANDS[k].num} · ${CANDS[k].name} (${CANDS[k].party})`}<span class="cnt">${list.filter(d=>d.cand===k).length}</span></div>
       <div class="grid">${list.filter(d=>d.cand===k).map(d=>sticker(d)).join("")}</div>`).join("")}</section>`;
   }).join("");
   $("sections").querySelectorAll(".st").forEach(c=>c.onclick=()=>openSheet(c.dataset.n,c));
@@ -495,6 +499,7 @@ function openSheet(name, from){
 function closeSheet(){ $("sheet").hidden=true; $("sheet").innerHTML=""; if(lastFocus) lastFocus.focus(); }
 $("sheet").addEventListener("click",e=>{ if(e.target.id==="sheet") closeSheet(); });
 $("q").addEventListener("input",e=>{ state.q=e.target.value; render(); });
+$("split").onclick=()=>{ state.split=!state.split; $("split").setAttribute("aria-pressed",state.split); $("split").textContent=state.split?"Juntar em ordem alfabética":"Separar Lula e Flávio"; render(); };
 
 /* ---------- Abas ---------- */
 function setTab(t){
