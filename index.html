@@ -206,7 +206,7 @@ h1{font-family:var(--mono-display);font-weight:400;word-spacing:-.4em;font-size:
 .about h2{font-family:var(--display);font-weight:900;font-size:20px;margin:0 0 10px}
 .about ul{padding-left:18px;margin:0;display:flex;flex-direction:column;gap:8px;font-size:14px}
 footer{font-size:13px;color:var(--muted)}
-@media (max-width:760px){.cover{grid-template-columns:1fr}.pack{height:260px;max-width:440px}}
+@media (max-width:760px){.cover{grid-template-columns:1fr}.pack{height:400px;max-width:440px}.pack .st{width:128px}}
 @media (max-width:520px){.score{gap:6px}.score button{padding:10px;box-shadow:3px 3px 0 var(--ink)}.score .who{font-size:13px}.score .sub2{display:none}}
 </style>
 </head>
@@ -272,6 +272,7 @@ footer{font-size:13px;color:var(--muted)}
         <li>Manifestos com centenas de assinaturas entram só com os nomes citados nas matérias. Da carta de 75 criadores pró-Lula, entram os perfis mais conhecidos; a lista completa está na fonte.</li>
         <li>Não encontramos, nas matérias de 2026, cientistas citados nominalmente nem escritores ou intelectuais declarando apoio a Flávio Bolsonaro.</li>
         <li>Apoios a Caiado, Renan Santos e Augusto Cury são do 1º turno (4/10). O jogo usa só o 2º turno.</li>
+        <li>As fotos são de uso livre (Wikimedia Commons e órgãos públicos), com crédito na ficha de cada pessoa. Quem aparece com as iniciais é porque ainda não encontramos uma foto de uso livre.</li>
         <li>A cor de fundo indica a área. A faixa de apoio é vermelha para Lula e azul para Flávio.</li>
       </ul>
     </section>
@@ -314,6 +315,7 @@ const SOURCES = {
   S:{label:"Pipoca Moderna", title:"Giulia Benite declara voto em Lula em sua primeira eleição presidencial", date:"07/10/2026", url:"https://pipocamoderna.com.br/2026/10/giulia-benite-voto-lula/"},
   T:{label:"Estado de Minas", title:"Victor Fasano declara voto em Flávio", date:"03/10/2026", url:"https://www.em.com.br/cultura/2026/10/7513750-victor-fasano-declara-voto-em-flavio-e-ganha-curtida-de-gloria-peres.html"},
    U:{label:"Metrópoles", title:"Luana Piovani se posiciona após eleições e critica eleitores da direita", date:"05/10/2026", url:"https://www.metropoles.com/celebridades/luana-piovani-se-posiciona-apos-eleicoes-e-critica-eleitores-da-direita"},
+   a:{label:"Instagram (post oficial)", title:"Bianca Andrade: dia 25 vote com consciência de classe", date:"10/10/2026", url:"https://www.instagram.com/p/DeSsT9ERPOf/"},
   F:{label:"Revista Fórum", title:"Influenciadores lançam carta de apoio a Lula", date:"28/09/2026", url:"https://revistaforum.com.br/revista-forum/influenciadores-carta-lula-plataformas/"}
 };
 const CANDS = {
@@ -392,6 +394,7 @@ const RAW = [
  ["Adriana Esteves","Atuação","lula","Em vídeo no Instagram de Claudia Abreu (08/10): \"meu voto é no Lula. Bora, Lula\".","O",0,0,"Atriz"],
  ["Giulia Benite","Atuação","lula","Declarou voto em Lula na sua primeira eleição presidencial (07/10).","S",0,0,"Atriz (a Mônica dos filmes)"],
  ["Luana Piovani","Atuação","lula","Após o 1º turno, disse que seus princípios \"se identificam com a esquerda\" e criticou eleitores de direita, sem citar o nome do candidato (05/10).","U",1,0,"Atriz"],
+ ["Bianca Andrade (Boca Rosa)","Influência digital","lula","Em vídeo no Instagram (10/10) falou de consciência de classe, com a legenda \"dia 25 vote com consciência de classe\", sem citar o nome do candidato. Em 2022 declarou voto em Lula.","a",1,0,"Empresária e influenciadora"],
  ["Raí","Esporte","lula","Declarou voto em reel no Instagram (04/10).","E",0,0,"Ex-jogador de futebol"],
  ["Paulinho","Esporte","lula","Publicou nas redes defesa do Bolsa Família, Prouni e cotas, com voto em Lula (04/10).","E",0,0,"Jogador do Palmeiras"],
  ["Jackson Irvine","Esporte","lula","Postou foto com camisa número 13 e imagem de Sócrates (04/10).","E",1,0,"Jogador australiano"],
@@ -539,7 +542,7 @@ function openSheet(name, from){
       <div class="k">Apoio</div><p><b>${esc(candLabel(d))}</b>${d.signal?' · sinalizou (gesto ou aparição)':""}</p>
       <div class="k">Como</div><p>${d.how?esc(d.how):"Apoio público citado na reportagem."}</p>
       <div class="k">Fonte</div><p>${d.src.map(s=>`<a href="${SOURCES[s].url}" target="_blank" rel="noopener">${SOURCES[s].label}</a>`).join(" · ")}</p>
-      ${p?`<p class="credit">Foto: <a href="${p.page}" target="_blank" rel="noopener">${esc(p.credit)}</a>, ${esc(p.license)}, via Wikimedia Commons</p>`:""}
+      ${p?`<p class="credit">Foto: <a href="${p.page}" target="_blank" rel="noopener">${esc(p.credit)}</a>, ${esc(p.license)}, via Wikimedia Commons</p>`:`<p class="credit">Sem foto: ainda não encontramos uma imagem de uso livre desta pessoa.</p>`}
       <p style="margin-top:16px"><button type="button" class="btn" id="sh-close">Fechar</button></p>
     </div></div>`;
   $("sheet").hidden=false; $("sh-close").focus(); $("sh-close").onclick=closeSheet;
@@ -629,7 +632,7 @@ document.addEventListener("keydown",e=>{
 const coverPicks = ["Ivete Sangalo","Neymar","Caetano Veloso","Ana Castela"].map(n=>D.find(d=>d.name===n)).filter(Boolean);
 $("pack").innerHTML = coverPicks.map(d=>sticker(d,"div")).join("");
 $("sources").innerHTML = Object.values(SOURCES).map(s=>`<li><a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>, "${esc(s.title)}" (${s.date})</li>`).join("");
-$("credits-note").textContent = `Fotos: Wikimedia Commons, licenças livres; crédito de cada foto na ficha de cada pessoa. Quem não tem foto livre aparece com as iniciais.`;
+$("credits-note").textContent = `Fotos: Wikimedia Commons, licenças livres; crédito de cada foto na ficha de cada pessoa. Quem aparece com as iniciais é porque ainda não encontramos uma foto de uso livre dessa pessoa.`;
 drawTally(); renderScore(); render();
 try{ if(localStorage.getItem("vf-tab")==="jogo") setTab("jogo"); }catch(e){}
 </script>
